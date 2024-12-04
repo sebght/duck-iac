@@ -1,0 +1,6 @@
+encryptionsalt: v1:5imMV+z88G0=:v1:klc76XOCYz1GzCMf:qYJ+/m/jzH8CEQxEMcsNhnOvZ7CptA==
+config:
+  aws:region: eu-west-3
+  azure-native:location: francecentral
+  pulumi-rici:publicKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKH0xK5oup7Sr0pLwYU4FOhV3pGT3r2TY6lkWHdwSBru pulumi
+  pulumi-rici:vpcCIDR: 10.0.0.0/16

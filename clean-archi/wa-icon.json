@@ -1,0 +1,19 @@
+[
+    {
+        "name": "icon",
+        "image": "matthiasluedtke/iconserver:v3.13.0",
+        "essential": true,
+        "portMappings": [{
+            "containerPort": 8080,
+            "hostPort": 8080
+        }],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/WorkAdventure",
+                "awslogs-region": "eu-west-3",
+                "awslogs-stream-prefix": "icon"
+            }
+        }
+    }
+]

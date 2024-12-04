@@ -1,0 +1,33 @@
+[
+    {
+        "name": "traefik",
+        "image": "traefik:v2.8",
+        "entryPoint": [
+            "traefik", 
+            "--providers.ecs.clusters", "${ecs_cluster_name}",
+             
+            "--log.level", "INFO", 
+            "--providers.ecs.region", "eu-west-3", 
+            "--api.insecure"],
+        "essential": true,
+        "portMappings": [{
+            "name": "traefik-api",
+            "containerPort": 8080,
+            "hostPort": 8080
+        },
+        {
+            "name": "traefik",
+            "containerPort": 80,
+            "hostPort": 80
+        }],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/WorkAdventure",
+                "awslogs-region": "eu-west-3",
+                "awslogs-stream-prefix": "ecs"
+            }
+        }
+    
+    }
+]

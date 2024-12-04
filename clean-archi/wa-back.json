@@ -1,0 +1,100 @@
+[
+    {
+        "name": "back",
+        "image": "thecodingmachine/workadventure-back:v1.16.2",
+        "essential": true,
+        "portMappings": [
+            {
+                "name": "back",
+                "containerPort": 8080,
+                "hostPort": 8080
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/WorkAdventure",
+                "awslogs-region": "eu-west-3",
+                "awslogs-stream-prefix": "back"
+            }
+        },
+        "environment": [
+            {
+                "name": "PLAY_URL",
+                "value": "https://play.workaventure.aws.ocho.ninja"
+            },
+            {
+                "name": "ENABLE_MAP_EDITOR",
+                "value": "true"
+            },
+            {
+                "name": "SECRET_KEY",
+                "value": "ricirici"
+            },
+            {
+                "name": "JITSI_URL",
+                "value": "meet.jit.si"
+            },
+            {
+                "name": "BBB_URL",
+                "value": "https://test-install.blindsidenetworks.com/bigbluebutton/"
+            },
+            {
+                "name": "BBB_SECRET",
+                "value": "8cd8ef52e8e101574e400365b55e11a6"
+            },
+            {
+                "name": "MAX_PER_GROUP",
+                "value": "4"
+            },
+            {
+                "name": "STORE_VARIABLES_FOR_LOCAL_MAPS",
+                "value": "true"
+            },
+            {
+                "name": "REDIS_HOST",
+                "value": "redis.workadventure"
+            },
+            {
+                "name": "MAP_STORAGE_URL",
+                "value": "map-storage.workadventure:50053"
+            },
+            {
+                "name": "INTERNAL_MAP_STORAGE_URL",
+                "value": "http://map-storage.workadventure:3000"
+            },
+            {
+                "name": "PUBLIC_MAP_STORAGE_URL",
+                "value": "https://map-storage.workadventure.aws.ocho.ninja"
+            },
+            {
+                "name": "PLAYER_VARIABLES_MAX_TTL",
+                "value": "-1"
+            },
+            {
+                "name": "EJABBERD_API_URI",
+                "value": "http://ejabberd.workadventure/api"
+            },
+            {
+                "name": "EJABBERD_DOMAIN",
+                "value": "ejabberd.workadventure.aws.ocho.ninja"
+            },
+            {
+                "name": "EJABBERD_USER",
+                "value": "admin"
+            },
+            {
+                "name": "EJABBERD_PASSWORD",
+                "value": "mySecretPassword"
+            },
+            {
+                "name": "ENABLE_CHAT",
+                "value": "true"
+            },
+            {
+                "name": "ENABLE_CHAT_UPLOAD",
+                "value": "true"
+            }
+        ]
+    }
+]

@@ -1,0 +1,16 @@
+[
+    {
+        "name": "redis",
+        "image": "redis:6",
+        "essential": true,
+        "entryPoint": ["redis-server", "--bind",  "0.0.0.0"],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/WorkAdventure",
+                "awslogs-region": "eu-west-3",
+                "awslogs-stream-prefix": "redis"
+            }
+        }
+    }
+]
