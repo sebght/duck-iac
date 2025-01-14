@@ -1,0 +1,23 @@
+{
+  "name": "duck-ts",
+  "version": "1.0.0",
+  "description": "Implémentation en TypeScript de notre produit Infra pour la Duck",
+  "main": "./bin/index.js",
+  "bin": {
+    "duck": "./bin/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node ./bin/index.js"
+  },
+  "author": "Ulysse Fontaine / Sébastien Gahat",
+  "license": "ISC",
+  "dependencies": {
+    "@pulumi/aws": "^6.66.2",
+    "@pulumi/pulumi": "^3.145.0",
+    "@pulumiverse/scaleway": "^1.22.0",
+    "@types/node": "^22.10.5",
+    "commander": "^13.0.0",
+    "list": "^2.0.19"
+  }
+}

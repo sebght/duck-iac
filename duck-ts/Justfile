@@ -1,0 +1,22 @@
+default:
+    echo "Utilisation : just <commande>"
+    echo "Commandes disponibles :"
+    echo "  deploie     - Lancer le script de déploiement"
+    echo "  detruit     - Lancer le script de destruction"
+    echo "  rafraichit  - Lancer le script de rafraîchissement"
+
+# Définit un script pour le déploiement
+deploie:
+    echo "Déploiement en cours..."
+    npm run deploie
+
+# Définit un script pour la destruction
+detruit:
+    echo "Destruction en cours..."
+    npm run detruit
+
+# Définit un script pour le rafraîchissement
+rafraichit:
+    echo "Rafraîchissement en cours..."
+    npm run rafraichit
+
