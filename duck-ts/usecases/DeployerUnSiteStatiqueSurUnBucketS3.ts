@@ -2,7 +2,7 @@ import {IProgram, StackDependency} from "../tools/layer";
 import {PolicyDocument} from "@pulumi/aws/iam";
 import {AwsS3Repository} from "../repository/AwsS3Repository";
 
-export class SiteWeb implements IProgram {
+export class SiteStatiqueWebSurS3 implements IProgram {
     public plugins: StackDependency[];
     constructor(plugins: StackDependency[]) {
         this.plugins = plugins

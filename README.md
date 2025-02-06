@@ -8,7 +8,7 @@ Repository de code utilisé pour les démonstrations du talk "Infra as code, as 
 
 - Se mettre dans le dossier ``duck-ts``
 - nvm install ([nvm](https://github.com/nvm-sh/nvm) ou installer à la main la version de Node inscrite dans ce fichier)
-- Avoir des credentials AWS / Scaleway, et les configurer avec des variables d'environnement
+- Avoir des credentials AWS / Scaleway / GCP, et les configurer avec des variables d'environnement
 - Avoir configuré son backend Pulumi. 
 Exemple de `.envrc` ([direnv](https://direnv.net/)) à la racine de `duck-ts`, pour un backend local :
 ```

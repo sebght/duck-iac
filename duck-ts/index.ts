@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 import {Layer} from "./tools/layer";
 import {Command} from "commander";
-import {SiteWeb} from "./usecases/DeployerUnSiteStatiqueSurUnBucketS3";
+import {SiteStatiqueWebSurS3} from "./usecases/DeployerUnSiteStatiqueSurUnBucketS3";
 
 const process = require('process');
 
 const command = new Command();
 
-async function initLayer(siteWeb: SiteWeb) {
+async function initLayer(siteWeb: SiteStatiqueWebSurS3) {
     const layer: Layer = new Layer("dev", siteWeb)
     await layer.init()
     await layer.installPlugins()
@@ -19,7 +19,7 @@ async function initLayer(siteWeb: SiteWeb) {
 }
 
 const deploieSiteWeb = async () => {
-    const siteWeb = new SiteWeb([{name: "aws", version: "v6.66.2"}]);
+    const siteWeb = new SiteStatiqueWebSurS3([{name: "aws", version: "v6.66.2"}]);
     await siteWeb.run()
     const layer = await initLayer(siteWeb);
     await layer.refresh();
@@ -29,7 +29,7 @@ const deploieSiteWeb = async () => {
 }
 
 const detruit = async () => {
-    const siteWeb = new SiteWeb([{name: "aws", version: "v6.66.2"}]);
+    const siteWeb = new SiteStatiqueWebSurS3([{name: "aws", version: "v6.66.2"}]);
     await siteWeb.run()
     const layer = await initLayer(siteWeb);
     await layer.refresh();
@@ -37,14 +37,14 @@ const detruit = async () => {
 }
 
 const rafraichit = async () => {
-    const siteWeb = new SiteWeb([{name: "aws", version: "v6.66.2"}]);
+    const siteWeb = new SiteStatiqueWebSurS3([{name: "aws", version: "v6.66.2"}]);
     await siteWeb.run()
     const layer = await initLayer(siteWeb);
     await layer.refresh();
 }
 
 const plan = async () => {
-    const siteWeb = new SiteWeb([{name: "aws", version: "v6.66.2"}]);
+    const siteWeb = new SiteStatiqueWebSurS3([{name: "aws", version: "v6.66.2"}]);
     await siteWeb.run()
     const layer = await initLayer(siteWeb);
     await layer.preview();
