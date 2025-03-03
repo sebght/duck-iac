@@ -55,6 +55,7 @@ export class Layer<I, O> implements ILayer<I, O> {
       program: this.program
     });
   }
+
   async installPlugins() {
     console.info("installing plugins...");
     for (const plugin of this.stackConfig.plugins) {
