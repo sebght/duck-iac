@@ -38,8 +38,8 @@ export class ScwContainer implements IProgram {
     });
 
     const container = new scw.Container("duck", {
-      name: inputs.name,
-      description: inputs.name,
+      name: inputs.project,
+      description: inputs.project,
       namespaceId: main.id,
       registryImage: inputs.image,
       port: inputs.port,

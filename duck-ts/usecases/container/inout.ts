@@ -1,8 +1,8 @@
 
 export type ContainerInput = {
-  name: string
+  project: string
   image: string
-  port?: number
+  port: number
 }
 
 export type ContainerOutput = {
