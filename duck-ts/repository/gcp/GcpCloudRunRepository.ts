@@ -1,8 +1,11 @@
 import * as gcp from "@pulumi/gcp";
+import { Output } from "@pulumi/pulumi";
 
 export class GcpCloudRunRepository {
-    public newService(name: string, image: string, port: number): gcp.cloudrun.Service {
-        return new gcp.cloudrun.Service(name, {
+    private _domain: Output<string>;
+
+    public newService(name: string, image: string, port: number, publiclyExposed: boolean): void {
+        const service = new gcp.cloudrun.Service(name, {
             location: "us-central1",
             template: {
                 spec: {
@@ -23,9 +26,13 @@ export class GcpCloudRunRepository {
                 },
             },
         })
+        this._domain = service.statuses[0].url
+        if (publiclyExposed) {
+            this.publiclyExpose(service)
+        }
     }
 
-    public publiclyExpose(service: gcp.cloudrun.Service) {
+    private publiclyExpose(service: gcp.cloudrun.Service) {
         const serviceName = service.name;
         new gcp.cloudrun.IamMember("public-" + serviceName, {
             service: serviceName,
@@ -33,5 +40,9 @@ export class GcpCloudRunRepository {
             role: "roles/run.invoker",
             member: "allUsers",
         });
+    }
+
+    get domain(): Output<string> {
+        return this._domain;
     }
 }

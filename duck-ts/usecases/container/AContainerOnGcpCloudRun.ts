@@ -2,7 +2,6 @@ import { Layer } from "../../tools/layer";
 import { IProgram } from "../../tools/program";
 import { RequireInputs } from "../../tools/input"
 import * as pulumi from "@pulumi/pulumi"
-import { Service } from "@pulumi/gcp/cloudrun";
 import { ContainerInput, ContainerOutput } from "./inout";
 import { GcpCloudRunRepository } from "../../repository/gcp/GcpCloudRunRepository";
 
@@ -35,11 +34,15 @@ export class GcpContainerProgram implements IProgram {
         const inputs = RequireInputs<ContainerInput>()
 
         const gcpCloudRunRepository = new GcpCloudRunRepository()
-        const service: Service = gcpCloudRunRepository.newService(inputs.project, inputs.image, inputs.port)
-        gcpCloudRunRepository.publiclyExpose(service)
-
+        const publiclyExposed = true
+        gcpCloudRunRepository.newService(
+            inputs.project,
+            inputs.image,
+            inputs.port,
+            publiclyExposed
+        )
         return pulumi.output({
-            url: service.statuses[0].url
+            url: gcpCloudRunRepository.domain
         })
 
     };
