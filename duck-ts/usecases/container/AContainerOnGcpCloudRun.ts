@@ -44,6 +44,5 @@ export class GcpContainerProgram implements IProgram {
         return pulumi.output({
             url: gcpCloudRunRepository.domain
         })
-
     };
 }

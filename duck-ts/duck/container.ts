@@ -1,5 +1,5 @@
 import { NewScwContainerLayer } from "../usecases/container/AContainerOnScw";
-import { NewAwsEcsFargateContainer } from "../usecases/container/AwsEcsFargateContainer";
+import { NewAwsContainerLayer } from "../usecases/container/AContainerOnAwsFargate";
 import { NewGcpContainerLayer } from "../usecases/container/AContainerOnGcpCloudRun";
 import { ContainerInput, ContainerOutput } from "../usecases/container/inout";
 import { Layer } from "../tools/layer";
@@ -10,7 +10,7 @@ function selectCloud(cloud: string, project: string, env: string): Layer<Contain
     case "scw":
       return NewScwContainerLayer(`${project}-${env}`)
     case "aws":
-      return NewAwsEcsFargateContainer(`${project}-${env}`)
+      return NewAwsContainerLayer(`${project}-${env}`)
     case "gcp":
       return NewGcpContainerLayer(`${project}-${env}`)
   }

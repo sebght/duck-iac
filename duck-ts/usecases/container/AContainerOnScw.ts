@@ -46,6 +46,5 @@ export class ScwContainerProgram implements IProgram {
     return pulumi.output({
       url: scwRepository.domain
     })
-
   };
 }

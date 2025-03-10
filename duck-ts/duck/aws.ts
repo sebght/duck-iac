@@ -1,10 +1,10 @@
-import { NewAwsEcsFargateContainer } from "../usecases/container/AwsEcsFargateContainer";
+import { NewAwsContainerLayer } from "../usecases/container/AContainerOnAwsFargate";
 
 
 export async function deployAwsContainer(options: any) {
   console.log(`[${options.project}] Deploying ${options.image} on ${options.env}...`)
 
-  const p = NewAwsEcsFargateContainer(`${options.project}-${options.env}`)
+  const p = NewAwsContainerLayer(`${options.project}-${options.env}`)
 
   await p.setInputs({
     image: options.image,
@@ -22,7 +22,7 @@ export async function deployAwsContainer(options: any) {
 export async function destroyAwsContainer(options: any) {
   console.log(`[${options.project}] Destroying ${options.image} on ${options.env}...`)
 
-  const p = NewAwsEcsFargateContainer(`${options.project}-${options.env}`)
+  const p = NewAwsContainerLayer(`${options.project}-${options.env}`)
 
   await p.down()
   console.log(`[${options.project}] ${options.image} on ${options.env} destroyed.`)

@@ -4,29 +4,30 @@ import { tags } from "../../tools/tags";
 import * as pulumi from "@pulumi/pulumi";
 
 export class AwsECSRepository {
+  private _domain: pulumi.Output<string>;
 
-  public simple(image: string, exposePubliquement: boolean): pulumi.Output<string> {
-    const cluster = new aws.ecs.Cluster("duck-app-cluster", { tags });
-    const securityGroup = this.sgUniquementIngress80();
+  public newService(name: string, image: string, port: number, publiclyExposed: boolean): void {
+    const cluster = new aws.ecs.Cluster(name + "-cluster", { tags });
+    const securityGroup = this.onlyOneIngress(name, port);
 
-    const loadbalancer = new awsx.lb.ApplicationLoadBalancer("duck-app-lb", {
+    const loadbalancer = new awsx.lb.ApplicationLoadBalancer(name + "-lb", {
       securityGroups: [securityGroup.id],
       tags
     });
 
-    new awsx.ecs.FargateService("duck-app", {
+    new awsx.ecs.FargateService(name, {
       cluster: cluster.arn,
-      assignPublicIp: exposePubliquement,
+      assignPublicIp: publiclyExposed,
       taskDefinitionArgs: {
         container: {
-          name: "service-container",
+          name: name + "-container",
           image,
           cpu: 128,
           memory: 512,
           essential: true,
           portMappings: [
             {
-              containerPort: 80,
+              containerPort: port,
               targetGroup: loadbalancer.defaultTargetGroup
             }
           ],
@@ -34,18 +35,18 @@ export class AwsECSRepository {
       },
       tags
     });
-    return pulumi.interpolate`http://${loadbalancer.loadBalancer.dnsName}`
+    this._domain = pulumi.interpolate`http://${loadbalancer.loadBalancer.dnsName}`
   }
 
-  private sgUniquementIngress80() {
-    const vpc = new awsx.ec2.DefaultVpc("default-vpc");
-    return new aws.ec2.SecurityGroup("duck-app-lb-sg", {
-      vpcId: vpc.vpcId,
+  private onlyOneIngress(serviceName: string, exposedPort: number) {
+    const defaultVpc = new awsx.ec2.DefaultVpc("default-vpc");
+    return new aws.ec2.SecurityGroup(serviceName + "-lb-sg", {
+      vpcId: defaultVpc.vpcId,
       ingress: [
         {
           protocol: "tcp",
-          fromPort: 80,
-          toPort: 80,
+          fromPort: exposedPort,
+          toPort: exposedPort,
           cidrBlocks: ["0.0.0.0/0"],
         },
       ],
@@ -59,5 +60,9 @@ export class AwsECSRepository {
       ],
       tags
     });
+  }
+
+  get domain(): pulumi.Output<string> {
+    return this._domain;
   }
 }
