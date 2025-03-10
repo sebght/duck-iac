@@ -4,16 +4,17 @@ import { RequireInputs } from "../../tools/input"
 import * as scw from "@pulumiverse/scaleway"
 import * as pulumi from "@pulumi/pulumi"
 import { ContainerInput, ContainerOutput } from "./inout";
+import {ScwRepository} from "../../repository/scw/ScwRepository";
 
-export function NewScwContainerProgram(stackName: string): Layer<ContainerInput, ContainerOutput> {
-  const p = new ScwContainer()
+export function NewScwContainerLayer(stackName: string): Layer<ContainerInput, ContainerOutput> {
+  const p = new ScwContainerProgram()
   const l = new Layer<ContainerInput, ContainerOutput>(stackName, p)
   l.init()
 
   return l
 }
 
-export class ScwContainer implements IProgram {
+export class ScwContainerProgram implements IProgram {
   constructor() { }
 
   public plugins() {
@@ -33,29 +34,17 @@ export class ScwContainer implements IProgram {
   public async run(): Promise<pulumi.Output<ContainerOutput>> {
     const inputs = RequireInputs<ContainerInput>()
 
-    const main = new scw.ContainerNamespace("main", {
-      name: "duck",
-    });
-
-    const container = new scw.Container("duck", {
-      name: inputs.project,
-      description: inputs.project,
-      namespaceId: main.id,
-      registryImage: inputs.image,
-      port: inputs.port,
-      cpuLimit: 140,
-      memoryLimit: 256,
-      minScale: 3,
-      maxScale: 5,
-      timeout: 600,
-      maxConcurrency: 80,
-      privacy: "public",
-      protocol: "http1",
-      deploy: true,
-    });
+    const scwRepository = new ScwRepository()
+    const publiclyExposed = true
+    scwRepository.newContainer(
+        inputs.project,
+        inputs.image,
+        inputs.port,
+        publiclyExposed
+    )
 
     return pulumi.output({
-      url: container.domainName
+      url: scwRepository.domain
     })
 
   };

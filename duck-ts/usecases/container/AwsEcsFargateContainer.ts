@@ -1,6 +1,6 @@
 import { Layer } from "../../tools/layer";
 import { IProgram } from "../../tools/program";
-import { AwsECSRepository } from "../../repository/aws/ECSRepository";
+import { AwsECSRepository } from "../../repository/aws/AwsECSRepository";
 import { ContainerInput, ContainerOutput } from "./inout";
 import { RequireInputs } from "../../tools/input";
 
