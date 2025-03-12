@@ -75,8 +75,8 @@ const destroy = duck.command("destroy")
 // duck deploy container --project=duck --cloud=scw --env=dev --image="hashicorp/http-echo" --port=5678
 deploy.command("container")
   .addOption(projectOpt)
-  .addOption(envOpt)
   .addOption(cloudOpt)
+  .addOption(envOpt)
   .addOption(imageOpt)
   .addOption(portOpt)
   .action(deployContainer)
@@ -106,8 +106,6 @@ deployAws.command("container")
 destroyAws.command("container")
   .addOption(projectOpt)
   .addOption(envOpt)
-  .addOption(imageOpt)
-  .addOption(portOpt)
   .action(destroyAwsContainer)
 
 ////
@@ -128,8 +126,6 @@ deployScw.command("container")
 destroyScw.command("container")
   .addOption(projectOpt)
   .addOption(envOpt)
-  .addOption(imageOpt)
-  .addOption(portOpt)
   .action(destroyScwContainer)
 
 ////
@@ -140,18 +136,16 @@ const destroyGcp = destroy.command("gcp")
 
 // duck deploy scw container --project=duck --env=dev --image="hashicorp/http-echo" --port=5678
 deployGcp.command("container")
-    .addOption(projectOpt)
-    .addOption(envOpt)
-    .addOption(imageOpt)
-    .addOption(portOpt)
-    .action(deployScwContainer)
+  .addOption(projectOpt)
+  .addOption(envOpt)
+  .addOption(imageOpt)
+  .addOption(portOpt)
+  .action(deployScwContainer)
 
 // duck destroy scw container --project=duck --env=dev --image="hashicorp/http-echo" --port=5678
 destroyGcp.command("container")
-    .addOption(projectOpt)
-    .addOption(envOpt)
-    .addOption(imageOpt)
-    .addOption(portOpt)
-    .action(destroyScwContainer)
+  .addOption(projectOpt)
+  .addOption(envOpt)
+  .action(destroyScwContainer)
 
 command.parse(process.argv);
