@@ -7,8 +7,8 @@ export async function deployAwsContainer(options: any) {
   const p = NewAwsContainerLayer(`${options.project}-${options.env}`)
 
   await p.setInputs({
+    project: options.project,
     image: options.image,
-    name: options.name,
     port: options.port
   })
 

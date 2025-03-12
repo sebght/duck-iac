@@ -7,7 +7,7 @@ export async function deployScwContainer(options: any) {
 
   await p.setInputs({
     image: options.image,
-    name: options.name,
+    project: options.project,
     port: options.port
   })
 

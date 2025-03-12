@@ -1,10 +1,9 @@
 import { Layer } from "../../tools/layer";
 import { IProgram } from "../../tools/program";
 import { RequireInputs } from "../../tools/input"
-import * as scw from "@pulumiverse/scaleway"
 import * as pulumi from "@pulumi/pulumi"
 import { ContainerInput, ContainerOutput } from "./inout";
-import {ScwRepository} from "../../repository/scw/ScwRepository";
+import { ScwRepository } from "../../repository/scw/ScwRepository";
 
 export function NewScwContainerLayer(stackName: string): Layer<ContainerInput, ContainerOutput> {
   const p = new ScwContainerProgram()
@@ -36,15 +35,16 @@ export class ScwContainerProgram implements IProgram {
 
     const scwRepository = new ScwRepository()
     const publiclyExposed = true
+
     scwRepository.newContainer(
-        inputs.project,
-        inputs.image,
-        inputs.port,
-        publiclyExposed
+      inputs.project,
+      inputs.image,
+      inputs.port,
+      publiclyExposed
     )
 
     return pulumi.output({
-      url: scwRepository.domain
+      url: scwRepository.domain,
     })
   };
 }
