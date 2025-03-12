@@ -1,5 +1,6 @@
-import { NewScwContainerProgram } from "../usecases/container/ScwContainer";
-import { NewAwsEcsFargateContainer } from "../usecases/container/AwsEcsFargateContainer";
+import { NewScwContainerLayer } from "../usecases/container/AContainerOnScw";
+import { NewAwsContainerLayer } from "../usecases/container/AContainerOnAwsFargate";
+import { NewGcpContainerLayer } from "../usecases/container/AContainerOnGcpCloudRun";
 import { ContainerInput, ContainerOutput } from "../usecases/container/inout";
 import { Layer } from "../tools/layer";
 
@@ -7,9 +8,11 @@ import { Layer } from "../tools/layer";
 function selectCloud(cloud: string, project: string, env: string): Layer<ContainerInput, ContainerOutput> {
   switch (cloud) {
     case "scw":
-      return NewScwContainerProgram(`${project}-${env}`)
+      return NewScwContainerLayer(`${project}-${env}`)
     case "aws":
-      return NewAwsEcsFargateContainer(`${project}-${env}`)
+      return NewAwsContainerLayer(`${project}-${env}`)
+    case "gcp":
+      return NewGcpContainerLayer(`${project}-${env}`)
   }
 }
 
@@ -27,7 +30,7 @@ export async function deployContainer(options: any) {
   await p.up()
 
   const outputs = await p.getOuputs()
-  console.log(`contrinerUrl: ${outputs.url}`)
+  console.log(`containerUrl: ${outputs.url}`)
   console.log(`[${options.project}] ${options.image} on ${options.env} deployed.`)
 }
 

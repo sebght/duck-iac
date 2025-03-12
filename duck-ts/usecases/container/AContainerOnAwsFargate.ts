@@ -1,18 +1,19 @@
 import { Layer } from "../../tools/layer";
 import { IProgram } from "../../tools/program";
-import { AwsECSRepository } from "../../repository/aws/ECSRepository";
+import { AwsECSRepository } from "../../repository/aws/AwsECSRepository";
 import { ContainerInput, ContainerOutput } from "./inout";
 import { RequireInputs } from "../../tools/input";
+import * as pulumi from "@pulumi/pulumi";
 
 
-export function NewAwsEcsFargateContainer(stackName: string): Layer<ContainerInput, ContainerOutput> {
-  const p = new AwsEcsFargateContainer()
+export function NewAwsContainerLayer(stackName: string): Layer<ContainerInput, ContainerOutput> {
+  const p = new AwsContainerProgram()
   const l = new Layer<ContainerInput, ContainerOutput>(stackName, p)
   l.init()
 
   return l
 }
-export class AwsEcsFargateContainer implements IProgram {
+export class AwsContainerProgram implements IProgram {
   constructor() { }
   public plugins() {
     return [
@@ -33,13 +34,20 @@ export class AwsEcsFargateContainer implements IProgram {
     return "aws-ecs-fargate-container"
   };
 
-  public async run() {
+  public async run(): Promise<pulumi.Output<ContainerOutput>> {
 
     const inputs = RequireInputs<ContainerInput>()
 
     const awsECSRepository = new AwsECSRepository()
-    const exposePubliquement: boolean = true
-    const loadBalancerUrl = awsECSRepository.simple(inputs.image, exposePubliquement)
-    return { url: loadBalancerUrl };
+    const publiclyExposed: boolean = true
+    awsECSRepository.newService(
+        inputs.project,
+        inputs.image,
+        inputs.port,
+        publiclyExposed
+    )
+    return pulumi.output({
+      url: awsECSRepository.domain
+    })
   };
 }

@@ -47,18 +47,18 @@ const projectOpt = new Option("--project <project>", "Name of the project")
   .makeOptionMandatory()
 
 const envOpt = new Option("--env <environment>", "Environment to deploy to, available")
-  .choices(["dev"])
-  .makeOptionMandatory()
+  .choices(["dev", "int", "prod"])
+  .default("dev")
 
 const cloudOpt = new Option("--cloud <cloud>", "Cloud to use")
-  .choices(["scw", "aws"])
+  .choices(["scw", "aws", "gcp"])
   .makeOptionMandatory()
 
 const imageOpt = new Option("--image <container image>", "Image to deploy")
   .makeOptionMandatory()
 
 const portOpt = new Option("--port <port>", "service port")
-  .makeOptionMandatory()
+  .default(8080)
 
 
 ////
@@ -131,5 +131,27 @@ destroyScw.command("container")
   .addOption(imageOpt)
   .addOption(portOpt)
   .action(destroyScwContainer)
+
+////
+// duck [deploy|destroy] gcp
+//
+const deployGcp = deploy.command("gcp")
+const destroyGcp = destroy.command("gcp")
+
+// duck deploy scw container --project=duck --env=dev --image="hashicorp/http-echo" --port=5678
+deployGcp.command("container")
+    .addOption(projectOpt)
+    .addOption(envOpt)
+    .addOption(imageOpt)
+    .addOption(portOpt)
+    .action(deployScwContainer)
+
+// duck destroy scw container --project=duck --env=dev --image="hashicorp/http-echo" --port=5678
+destroyGcp.command("container")
+    .addOption(projectOpt)
+    .addOption(envOpt)
+    .addOption(imageOpt)
+    .addOption(portOpt)
+    .action(destroyScwContainer)
 
 command.parse(process.argv);
