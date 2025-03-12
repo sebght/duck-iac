@@ -23,7 +23,7 @@ export async function deployContainer(options: any) {
 
   await p.setInputs({
     image: options.image,
-    name: options.name,
+    project: options.project,
     port: options.port
   })
 
