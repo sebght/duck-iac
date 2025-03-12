@@ -6,10 +6,10 @@ import { RequireInputs } from "../../tools/input";
 import * as pulumi from "@pulumi/pulumi";
 
 
-export function NewAwsContainerLayer(stackName: string): Layer<ContainerInput, ContainerOutput> {
+export async function NewAwsContainerLayer(stackName: string): Promise<Layer<ContainerInput, ContainerOutput>> {
   const p = new AwsContainerProgram()
   const l = new Layer<ContainerInput, ContainerOutput>(stackName, p)
-  l.init()
+  await l.init()
 
   return l
 }
@@ -41,10 +41,10 @@ export class AwsContainerProgram implements IProgram {
     const awsECSRepository = new AwsECSRepository()
     const publiclyExposed: boolean = true
     awsECSRepository.newService(
-        inputs.project,
-        inputs.image,
-        inputs.port,
-        publiclyExposed
+      inputs.project,
+      inputs.image,
+      inputs.port,
+      publiclyExposed
     )
     return pulumi.output({
       url: awsECSRepository.domain

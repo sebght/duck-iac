@@ -4,7 +4,7 @@ import { NewAwsContainerLayer } from "../usecases/container/AContainerOnAwsFarga
 export async function deployAwsContainer(options: any) {
   console.log(`[${options.project}] Deploying ${options.image} on ${options.env}...`)
 
-  const p = NewAwsContainerLayer(`${options.project}-${options.env}`)
+  const p = await NewAwsContainerLayer(`${options.project}-${options.env}`)
 
   await p.setInputs({
     project: options.project,
@@ -22,7 +22,7 @@ export async function deployAwsContainer(options: any) {
 export async function destroyAwsContainer(options: any) {
   console.log(`[${options.project}] Destroying ${options.image} on ${options.env}...`)
 
-  const p = NewAwsContainerLayer(`${options.project}-${options.env}`)
+  const p = await NewAwsContainerLayer(`${options.project}-${options.env}`)
 
   await p.down()
   console.log(`[${options.project}] ${options.image} on ${options.env} destroyed.`)

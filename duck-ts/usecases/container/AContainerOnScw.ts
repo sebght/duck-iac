@@ -5,10 +5,10 @@ import * as pulumi from "@pulumi/pulumi"
 import { ContainerInput, ContainerOutput } from "./inout";
 import { ScwRepository } from "../../repository/scw/ScwRepository";
 
-export function NewScwContainerLayer(stackName: string): Layer<ContainerInput, ContainerOutput> {
+export async function NewScwContainerLayer(stackName: string): Promise<Layer<ContainerInput, ContainerOutput>> {
   const p = new ScwContainerProgram()
   const l = new Layer<ContainerInput, ContainerOutput>(stackName, p)
-  l.init()
+  await l.init()
 
   return l
 }

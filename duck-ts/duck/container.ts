@@ -5,7 +5,7 @@ import { ContainerInput, ContainerOutput } from "../usecases/container/inout";
 import { Layer } from "../tools/layer";
 
 
-function selectCloud(cloud: string, project: string, env: string): Layer<ContainerInput, ContainerOutput> {
+async function selectCloud(cloud: string, project: string, env: string): Promise<Layer<ContainerInput, ContainerOutput>> {
   switch (cloud) {
     case "scw":
       return NewScwContainerLayer(`${project}-${env}`)
@@ -19,7 +19,7 @@ function selectCloud(cloud: string, project: string, env: string): Layer<Contain
 export async function deployContainer(options: any) {
   console.log(`[${options.project}] Deploying ${options.image} on ${options.env}...`)
 
-  const p = selectCloud(options.cloud, options.project, options.env)
+  const p = await selectCloud(options.cloud, options.project, options.env)
 
   await p.setInputs({
     image: options.image,
@@ -37,7 +37,7 @@ export async function deployContainer(options: any) {
 export async function destroyContainer(options: any) {
   console.log(`[${options.project}] Destroying ${options.image} on ${options.env}...`)
 
-  const p = selectCloud(options.cloud, options.project, options.env)
+  const p = await selectCloud(options.cloud, options.project, options.env)
 
   await p.down()
   console.log(`[${options.project}] ${options.image} on ${options.env} destroyed.`)
