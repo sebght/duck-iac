@@ -3,7 +3,7 @@ import { IProgram } from "../../tools/program";
 import { RequireInputs } from "../../tools/input"
 import * as pulumi from "@pulumi/pulumi"
 import { ContainerInput, ContainerOutput } from "./inout";
-import { ScwRepository } from "../../repository/scw/ScwRepository";
+import { ScwContainerRepository } from "../../repository/scw/ScwContainerRepository";
 
 export async function NewScwContainerLayer(stackName: string): Promise<Layer<ContainerInput, ContainerOutput>> {
   const p = new ScwContainerProgram()
@@ -33,10 +33,10 @@ export class ScwContainerProgram implements IProgram {
   public async run(): Promise<pulumi.Output<ContainerOutput>> {
     const inputs = RequireInputs<ContainerInput>()
 
-    const scwRepository = new ScwRepository()
+    const scwContainerRepository = new ScwContainerRepository()
     const publiclyExposed = true
 
-    scwRepository.newContainer(
+    scwContainerRepository.newContainer(
       inputs.project,
       inputs.image,
       inputs.port,
@@ -44,7 +44,7 @@ export class ScwContainerProgram implements IProgram {
     )
 
     return pulumi.output({
-      url: scwRepository.domain,
+      url: scwContainerRepository.domain,
     })
   };
 }

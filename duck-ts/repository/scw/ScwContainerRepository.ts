@@ -1,7 +1,7 @@
 import * as scw from "@pulumiverse/scaleway";
 import { Output } from "@pulumi/pulumi";
 
-export class ScwRepository {
+export class ScwContainerRepository {
     private _domain: Output<string>;
 
     public newContainer(name: string, image: string, port: number, publiclyExposed: boolean): void {
