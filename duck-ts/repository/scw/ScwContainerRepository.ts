@@ -3,7 +3,7 @@ import {Output} from "@pulumi/pulumi";
 
 export class ScwContainerRepository {
     private _container: scw.Container;
-    private LEGIT_EXTERNAL_PORTS: number[] = [80, 8080];
+    private LEGIT_EXTERNAL_PORTS: number[] = [80, 8080, 5678];
 
     public newContainer(name: string, image: string, port: number, publiclyExposed: boolean): void {
         if (this.isInvalidImage(image)) {

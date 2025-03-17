@@ -59,7 +59,7 @@ describe("ScwContainerRepository", () => {
     it("retourne une erreur si le port souhaité est invalide", async () => {
         const port = 8085
         expect(() => repo.newContainer("invalid-app", "example-image:v1.0", port, true))
-            .to.throw(Error, 'Le port "8085" est invalide. Vous devez spécifier un port valide, dans la liste suivante : 80,8080.');
+            .to.throw(Error, 'Le port "8085" est invalide. Vous devez spécifier un port valide, dans la liste suivante : 80,8080,5678.');
     });
 
 });
