@@ -92,6 +92,8 @@ export class Layer<I, O> implements ILayer<I, O> {
   async getOuputs(): Promise<O> {
     const plmOut = await this.stack.outputs()
 
+    console.log(plmOut)
+
     let o: { [key: string]: any } = {}
 
     Object.entries(plmOut).map((v) => {

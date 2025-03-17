@@ -1,11 +1,14 @@
-import {NewScwContainerLayer} from "../usecases/container/AContainerOnScw";
-import {NewAwsContainerLayer} from "../usecases/container/AContainerOnAwsFargate";
-import {NewGcpContainerLayer} from "../usecases/container/AContainerOnGcpCloudRun";
-import {ContainerInput, ContainerOutput} from "../usecases/container/inout";
-import {Layer} from "../tools/layer";
+import { NewScwContainerLayer } from "../usecases/container/AContainerOnScw";
+import { NewAwsContainerLayer } from "../usecases/container/AContainerOnAwsFargate";
+import { NewGcpContainerLayer } from "../usecases/container/AContainerOnGcpCloudRun";
+import { ContainerInput, ContainerOutput } from "../usecases/container/inout";
+import { Layer } from "../tools/layer";
 
 
-async function selectCloud(cloud: string, project: string, env: string): Promise<Layer<ContainerInput, ContainerOutput>> {
+type In = ContainerInput
+type Out = ContainerOutput
+
+async function selectCloud(cloud: string, project: string, env: string): Promise<Layer<In, Out>> {
   switch (cloud) {
     case "scw":
       return NewScwContainerLayer(`${project}-${env}`)
@@ -24,7 +27,7 @@ export async function deployContainer(options: any) {
   await p.setInputs({
     image: options.image,
     project: options.project,
-    port: options.port
+    port: options.port,
   })
 
   await p.up()
@@ -40,16 +43,16 @@ export async function getContainerOutputs(options: any): Promise<ContainerOutput
   await p.setInputs({
     image: options.image,
     project: options.project,
-    port: options.port
+    port: options.port,
   })
   return await p.getOuputs()
 }
 
 export async function destroyContainer(options: any) {
-  console.log(`[${options.project}] Destroying ${options.image} on ${options.env}...`)
+  console.log(`[${options.project}]Destroying ${options.image} on ${options.env}...`)
 
   const p = await selectCloud(options.cloud, options.project, options.env)
 
   await p.down()
-  console.log(`[${options.project}] ${options.image} on ${options.env} destroyed.`)
+  console.log(`[${options.project}]${options.image} on ${options.env} destroyed.`)
 }

@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-import { Command, Option } from "commander";
+import { Command, Option, InvalidArgumentError } from "commander";
 import process = require('process');
 
 import { deployContainer, destroyContainer } from "./duck/container";
 import { deployAwsContainer, destroyAwsContainer } from "./duck/aws";
 import { deployScwContainer, destroyScwContainer } from "./duck/scw";
+import { deployProject, destroyProject } from "./duck/project";
 
 const command = new Command();
 
@@ -13,6 +14,7 @@ const command = new Command();
 //
 // duck deploy container --project=duck --cloud=scw --env=dev --image="hashicorp/http-echo" --port=5678
 // duck deploy container --project=duck --cloud=aws --env=dev --image="hashicorp/http-echo" --port=5678
+// duck deploy container --project=duck --cloud=aws --env=dev --image="hashicorp/http-echo" --port=5678 --postgresql
 //
 // duck deploy container --project=id -e dev --image=ttl.sh --version=1.20
 //
@@ -40,6 +42,24 @@ const duck = command
   .description("CLI Duck pour exécuter des fonctions de provisionnement d'infra")
   .version("1.0.0");
 
+//////
+// Parsers
+//
+const portParser = (value: any) => {
+  const v = parseInt(value, 10)
+  if (isNaN(v)) {
+    throw new InvalidArgumentError('Not a number')
+  }
+  return v
+}
+
+const collectEnvVars = (value: string, prev: { [key: string]: string }) => {
+  const s = value.split("=")
+  prev[s[0]] = s[1]
+
+  return prev
+}
+
 /////
 // Options 
 //
@@ -59,6 +79,14 @@ const imageOpt = new Option("--image <container image>", "Image to deploy")
 
 const portOpt = new Option("--port <port>", "service port")
   .default(8080)
+  .argParser(portParser)
+
+const envVarsOpt = new Option("--envVars <env var>", "environment variable")
+  .argParser(collectEnvVars)
+  .default({})
+
+const dbOpt = new Option("--db", "enable database")
+
 
 
 ////
@@ -87,6 +115,26 @@ destroy.command("container")
   .addOption(cloudOpt)
   .addOption(envOpt)
   .action(destroyContainer)
+
+
+// duck deploy project --project=duck --cloud=scw --env=dev --image="hashicorp/http-echo" --port=5678 ( --db )
+deploy.command("project")
+  .addOption(projectOpt)
+  .addOption(cloudOpt)
+  .addOption(envOpt)
+  .addOption(imageOpt)
+  .addOption(portOpt)
+  .addOption(dbOpt)
+  .addOption(envVarsOpt)
+  .action(deployProject)
+
+// duck destroy project --project=duck --cloud=scw --env=dev --image="hashicorp/http-echo" --port=5678 ( --db )
+destroy.command("project")
+  .addOption(projectOpt)
+  .addOption(cloudOpt)
+  .addOption(envOpt)
+  .addOption(dbOpt)
+  .action(destroyProject)
 
 /////
 // duck [deploy|destroy] aws

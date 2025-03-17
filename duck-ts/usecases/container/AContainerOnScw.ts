@@ -39,8 +39,9 @@ export class ScwContainerProgram implements IProgram {
     scwContainerRepository.newContainer(
       inputs.project,
       inputs.image,
-      +inputs.port,
-      publiclyExposed
+      inputs.port,
+      publiclyExposed,
+      inputs.envs
     )
 
     return pulumi.output({
