@@ -44,4 +44,22 @@ describe("ScwContainerRepository", () => {
         expect(privacy).to.equal("private")
     });
 
+    it("retourne une erreur si image a le tag latest", async () => {
+        const image = "example-image:latest"
+        expect(() => repo.newContainer("invalid-app", image, 8080, true))
+            .to.throw(Error, 'L\'image "example-image:latest" est invalide. Vous devez spécifier un tag autre que "latest".');
+    });
+
+    it("retourne une erreur si image n'a pas de tag", async () => {
+        const image = "example-image"
+        expect(() => repo.newContainer("invalid-app", image, 8080, true))
+            .to.throw(Error, 'L\'image "example-image" est invalide. Vous devez spécifier un tag autre que "latest".');
+    });
+
+    it("retourne une erreur si le port souhaité est invalide", async () => {
+        const port = 8085
+        expect(() => repo.newContainer("invalid-app", "example-image:v1.0", port, true))
+            .to.throw(Error, 'Le port "8085" est invalide. Vous devez spécifier un port valide, dans la liste suivante : 80,8080.');
+    });
+
 });
