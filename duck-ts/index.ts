@@ -47,7 +47,7 @@ const projectOpt = new Option("--project <project>", "Name of the project")
   .makeOptionMandatory()
 
 const envOpt = new Option("--env <environment>", "Environment to deploy to, available")
-  .choices(["dev", "int", "prod"])
+  .choices(["dev", "int", "e2e", "prod"])
   .default("dev")
 
 const cloudOpt = new Option("--cloud <cloud>", "Cloud to use")
