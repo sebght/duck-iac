@@ -1,5 +1,0 @@
-name: pulumi-rici
-runtime: nodejs
-description: A minimal AWS TypeScript Pulumi program
-# backend:
-#   url: 
